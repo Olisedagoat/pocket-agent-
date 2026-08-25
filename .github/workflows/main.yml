@@ -16,5 +16,6 @@ jobs:
           python-version: '3.11'
 
       - name: Run script
-        run:  python agent.py || python Agent.py
+        run:  ls -la && python *.py
+
 
