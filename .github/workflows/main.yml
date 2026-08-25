@@ -16,4 +16,5 @@ jobs:
           python-version: '3.11'
 
       - name: Run script
-        run: python Agent.py
+        run:  python agent.py || python Agent.py
+
