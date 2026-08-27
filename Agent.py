@@ -1,21 +1,28 @@
-import datetime
 import json
+import urllib.request
 
-def run_analysis():
-    timestamp = datetime.datetime.utcnow().isoformat()
+def fetch_top_tech_trends():
+    url = "https://hacker-news.firebaseio.com/v0/topstories.json"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     
-    # Симуляция структурированного вывода данных
-    intel_report = {
-        "status": "SUCCESS",
-        "agent": "Cloud-Runner-v1",
-        "executed_at": timestamp,
-        "actionable_insight": "Система запущена из облака без единой строчки локального кода."
-    }
+    with urllib.request.urlopen(req) as response:
+        story_ids = json.loads(response.read().decode())[:5]
     
-    print("\n" + "="*40)
-    print("🚀 ОТЧЕТ АВТОНОМНОГО АГЕНТА СГЕНЕРИРОВАН:")
-    print(json.dumps(intel_report, indent=2, ensure_ascii=False))
-    print("="*40 + "\n")
+    trends = []
+    for s_id in story_ids:
+        item_url = f"https://hacker-news.firebaseio.com/v0/item/{s_id}.json"
+        with urllib.request.urlopen(item_url) as res:
+            item = json.loads(res.read().decode())
+            trends.append({
+                "title": item.get("title"),
+                "score": item.get("score"),
+                "url": item.get("url", f"https://news.ycombinator.com/item?id={s_id}")
+            })
+            
+    print("\n" + "="*50)
+    print("🔥 ТОП-5 АКТУАЛЬНЫХ ТЕХНОЛОГИЧЕСКИХ ТРЕНДОВ:")
+    print(json.dumps(trends, indent=2, ensure_ascii=False))
+    print("="*50 + "\n")
 
 if __name__ == "__main__":
-    run_analysis()
+    fetch_top_tech_trends()
