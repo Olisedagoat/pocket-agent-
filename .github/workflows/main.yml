@@ -1,7 +1,7 @@
-name: Run Mobile Agent
+Mobile Agent
 
 on:
-  workflow_dispatch:
+  wor:
 
 jobs:
   execute:
@@ -19,3 +19,4 @@ jobs:
         run:  ls -la && python *.py
 
 
+ 
