@@ -4,10 +4,11 @@ import urllib.request
 import urllib.parse
 
 def send_telegram_message(text):
-    token = os.environ.get("TELEGRAM_BOT_TOKEN")
-    chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
+    
     if not token or not chat_id:
-        print("Ошибка: токен или Chat ID не переданы.")
+        print("Ошибка: токен или Chat ID не заданы.")
         return
 
     url = f"https://api.telegram.org/bot{token}/sendMessage"
@@ -20,7 +21,7 @@ def send_telegram_message(text):
 
     req = urllib.request.Request(url, data=payload)
     with urllib.request.urlopen(req) as resp:
-        print("Сообщение успешно доставлено в Telegram!")
+        print("Отчет успешно отправлен в Telegram!")
 
 def fetch_and_report():
     url = "https://hacker-news.firebaseio.com/v0/topstories.json"
@@ -45,4 +46,3 @@ def fetch_and_report():
 
 if __name__ == "__main__":
     fetch_and_report()
-
