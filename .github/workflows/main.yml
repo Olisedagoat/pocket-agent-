@@ -1,7 +1,7 @@
-Mobile Agent
+name: Run Mobile Agent
 
 on:
-  wor:
+  workflow_dispatch:
 
 jobs:
   execute:
@@ -16,7 +16,7 @@ jobs:
           python-version: '3.11'
 
       - name: Run script
-        run:  ls -la && python *.py
-
-
- 
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python agent.py
